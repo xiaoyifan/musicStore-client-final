@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class PaymentsController < ApplicationController
 
   def new
@@ -17,6 +19,7 @@ class PaymentsController < ApplicationController
           :description => @product.title
         )
         order = Order.create user_id:current_user.uid, product_id: @product.id, amount: @product.price, created_at:Time.new(), updated_at: Time.new()
+        open("http://localhost:4000/purchase?sku=#{@product.sku}").read
         redirect_to root_url, notice: "The #{@product.title} is on its way!"
     else
         redirect_to root_url, notice: "Please login first"
