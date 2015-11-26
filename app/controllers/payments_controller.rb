@@ -9,14 +9,18 @@ class PaymentsController < ApplicationController
     Stripe.api_key = "sk_test_dkY8errhPdowa3cPJ9Dfei2e"
     @product = Product.find_by_id(params[:productId])
 
-    Stripe::Charge.create(
-      :amount => @product.price,
-      :currency => "usd",
-      :source => params[:stripeToken], # obtained with Stripe.js
-      :description => @product.title
-    )
+    if logged_in?
+        Stripe::Charge.create(
+          :amount => @product.price,
+          :currency => "usd",
+          :source => params[:stripeToken], # obtained with Stripe.js
+          :description => @product.title
+        )
+        order = Order.create user_id:current_user.uid, product_id: @product.id, amount: @product.price, created_at:Time.new(), updated_at: Time.new()
+        redirect_to root_url, notice: "The #{@product.title} is on its way!"
+    else
+        redirect_to root_url, notice: "Please login first"
+    end
 
-    order = Order.create user_id:current_user.uid, product_id: @product.id, amount: @product.price, created_at:Time.new(), updated_at: Time.new()
-    redirect_to root_url, notice: "The #{@product.title} is on its way!"
   end
 end
