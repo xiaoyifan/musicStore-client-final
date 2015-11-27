@@ -5,7 +5,11 @@ class OrdersController < ApplicationController
   end
 
   def new
-    product = Product.find_by(id: params[ :product_id])
+  #  product = Product.find_by(id: params[ :product_id])
+    product = Product.find_by_id(params[ :id])
+    puts "##################"
+    puts product
+    puts "##################"
     json = open("http://localhost:4000/on_hand?sku=#{product.sku}").read
     puts "##################"
     puts json

@@ -27,7 +27,7 @@ function stripeResponseHandler(status, response) {
   } else {
     // response contains id and card, which contains additional card details
 
-    
+
     var token = response.id;
     // Insert the token into the form so it gets submitted to the server
     $form.append($('<input type="hidden" name="stripeToken" />').val(token));
@@ -74,7 +74,7 @@ function stripeResponseHandler(status, response) {
         <input type="text" size="4" data-stripe="exp-year"/>
       </div>
 
-        <% @product = Product.find_by_id(params[:product_id]) %>
+        <% @product = Product.find_by_id(params[:id]) %>
         <%= hidden_field_tag "productId", @product.id %>
         <%= hidden_field_tag "productTitle", @product.title %>
         <button type="submit">Submit Payment</button>
